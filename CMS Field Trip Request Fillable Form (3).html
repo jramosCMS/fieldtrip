@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crosby Middle School Field Trip & Bus Request</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            font-size: 13px;
+            background-color: #f4f4f4;
+        }
+        .page {
+            width: 8.5in;
+            min-height: 10.5in;
+            margin: 0 auto 20px auto;
+            background: #fff;
+            padding: 0.4in;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        h2, h3 {
+            text-align: center;
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+        }
+        .section-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 6px 10px;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 12px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 3px;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #444;
+        }
+        input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 5px 8px;
+            border: 1px solid #aaa;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        textarea {
+            resize: vertical;
+            height: 50px;
+        }
+        .instruction-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 8px 12px;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+        .signature-block {
+            margin-top: 15px;
+            border-top: 1px dashed #ccc;
+            padding-top: 12px;
+        }
+        /* Style specifically for taller signature & date inputs */
+        .signature-block input[type="text"],
+        .signature-block input.sig-date {
+            height: 42px;
+            font-size: 14px;
+            padding: 8px 10px;
+        }
+
+        /* Page 3 Map Specifics */
+        .map-controls {
+            background: #eef4f8;
+            padding: 12px;
+            border: 1px solid #b8daff;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .input-hint {
+            font-size: 11px;
+            color: #555;
+            margin-top: 4px;
+            font-style: italic;
+        }
+        .btn-generate {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-weight: bold;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .btn-generate:hover {
+            background-color: #218838;
+        }
+        .map-title {
+            font-weight: bold;
+            font-size: 12px;
+            margin: 8px 0 4px 0;
+            color: #1a252f;
+            text-transform: uppercase;
+        }
+        .map-frame {
+            width: 100%;
+            height: 250px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        /* Page 4 Checklist Specifics */
+        .checklist-container {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #fafafa;
+        }
+        .checklist-item {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .checklist-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            margin-top: 2px;
+            cursor: pointer;
+        }
+        .checklist-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2c3e50;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+        .sub-checklist {
+            margin-left: 28px;
+            margin-top: 6px;
+            margin-bottom: 10px;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .sub-checklist li {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: flex-start;
+            font-size: 12px;
+            color: #555;
+        }
+        .sub-checklist input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+            margin-right: 8px;
+            margin-top: 1px;
+        }
+
+        /* Footer Date Stamp */
+        .page-footer {
+            position: absolute;
+            bottom: 0.25in;
+            left: 0.4in;
+            right: 0.4in;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 5px;
+        }
+
+        /* Print Action Controls */
+        .print-bar {
+            text-align: center;
+            margin: 30px 0 10px 0;
+        }
+        .btn-print {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .btn-print:hover {
+            background-color: #0056b3;
+        }
+
+        /* STRICT PRINT & PDF RULES */
+        @page {
+            size: letter portrait;
+            margin: 0;
+        }
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+                margin: 0;
+            }
+            .page {
+                box-shadow: none;
+                border: none;
+                width: 100%;
+                height: 10.5in;
+                padding: 0.4in;
+                margin: 0;
+                page-break-after: always;
+                page-break-inside: avoid;
+            }
+            .page:last-child {
+                page-break-after: auto;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .map-frame {
+                height: 230px;
+            }
+            input, textarea, select {
+                border: 1px solid #888 !important;
+            }
+            input[type="checkbox"] {
+                border: 1px solid #000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1: BUS REQUEST & OFFICE USE -->
+<div class="page">
+    <h2>Crosby Independent School District</h2>
+    <h3>Crosby Middle School — Field Trip & Bus Request</h3>
+
+    <div class="section-header">Part 1: Bus Request Form</div>
+
+    <div class="row">
+        <div class="col">
+            <label for="today-date">Today's Date:</label>
+            <input type="date" id="today-date" name="today_date">
+        </div>
+        <div class="col">
+            <label for="requester">Requester:</label>
+            <input type="text" id="requester" name="requester">
+        </div>
+        <div class="col">
+            <label for="school-dept">School/Dept.:</label>
+            <input type="text" id="school-dept" name="school_dept" value="CMS">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="phone-no">Phone No.:</label>
+            <input type="text" id="phone-no" name="phone_no" value="281-328-9264">
+        </div>
+        <div class="col">
+            <label for="ext">Ext.:</label>
+            <input type="text" id="ext" name="ext">
+        </div>
+        <div class="col">
+            <label for="supervisor">Person Supervising Trip:</label>
+            <input type="text" id="supervisor" name="supervisor">
+        </div>
+        <div class="col">
+            <label for="supervisor-phone">Phone #:</label>
+            <input type="text" id="supervisor-phone" name="supervisor_phone">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="trip-desc">Trip Description:</label>
+            <input type="text" id="trip-desc" name="trip_desc">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="trip-date">Trip Date:</label>
+            <input type="date" id="trip-date" name="trip_date">
+        </div>
+        <div class="col">
+            <label for="alt-date">Alternative Date:</label>
+            <input type="date" id="alt-date" name="alt_date">
+        </div>
+        <div class="col">
+            <label for="num-students">Number of Students:</label>
+            <input type="number" id="num-students" name="num_students">
+        </div>
+        <div class="col">
+            <label for="num-adults">Number of Adults:</label>
+            <input type="number" id="num-adults" name="num_adults">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="pickup-loc">Pickup at:</label>
+            <input type="text" id="pickup-loc" name="pickup_loc" value="CMS 14703 FM 2100 Crosby, TX 77532">
+        </div>
+        <div class="col">
+            <label for="pickup-time">Pickup Time:</label>
+            <input type="time" id="pickup-time" name="pickup_time">
+        </div>
+        <div class="col">
+            <label for="arrival-time">Arrival Time:</label>
+            <input type="time" id="arrival-time" name="arrival_time">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="destination">Destination Address:</label>
+            <input type="text" id="destination" name="destination">
+        </div>
+        <div class="col">
+            <label for="leave-time">Leave Time:</label>
+            <input type="time" id="leave-time" name="leave_time">
+        </div>
+        <div class="col">
+            <label for="return-time">Return Time:</label>
+            <input type="time" id="return-time" name="return_time">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="return-loc">Return to:</label>
+            <input type="text" id="return-loc" name="return_loc" value="CMS 14703 FM 2100 Crosby, TX 77532">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="special-instructions">Special Instructions:</label>
+            <textarea id="special-instructions" name="special_instructions"></textarea>
+        </div>
+    </div>
+
+    <!-- FRONT OFFICE USE ONLY -->
+    <div class="section-header" style="background-color: #555;">Part 2: CMS Front Office Use Only</div>
+
+    <div class="row">
+        <div class="col">
+            <label for="po-number">Purchase Order #:</label>
+            <input type="text" id="po-number" name="po_number">
+        </div>
+        <div class="col">
+            <label for="date-rcvd">Date Received:</label>
+            <input type="text" id="date-rcvd" name="date_rcvd">
+        </div>
+        <div class="col">
+            <label for="trip-number">Trip #:</label>
+            <input type="text" id="trip-number" name="trip_number">
+        </div>
+        <div class="col">
+            <label for="tracker-date">Date Entered in Trip Tracker:</label>
+            <input type="text" id="tracker-date" name="tracker_date">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="cost-bus">Cost per Bus:</label>
+            <input type="text" id="cost-bus" name="cost_bus" value="$5.63">
+        </div>
+        <div class="col">
+            <label for="cost-pass-driver">Cost/Pass. Vehicle (w/ Driver):</label>
+            <input type="text" id="cost-pass-driver" name="cost_pass_driver" value="$5.63">
+        </div>
+        <div class="col">
+            <label for="cost-pass-nodriver">Cost/Pass. Vehicle (w/o Driver):</label>
+            <input type="text" id="cost-pass-nodriver" name="cost_pass_nodriver" value="$0.56">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="total-miles">Total Miles:</label>
+            <input type="text" id="total-miles" name="total_miles">
+        </div>
+        <div class="col">
+            <label for="total-amount">Total Amount ($):</label>
+            <input type="text" id="total-amount" name="total_amount">
+        </div>
+        <div class="col">
+            <label for="account-num">Account #:</label>
+            <input type="text" id="account-num" name="account_num">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="date-returned">Date Returned for Missing Info:</label>
+            <input type="text" id="date-returned" name="date_returned">
+        </div>
+    </div>
+
+    <div class="page-footer">
+        <span>Crosby Middle School Request Form</span>
+        <span class="stamp-date"></span>
+    </div>
+</div>
+
+<!-- PAGE 2: TRAVEL REQUEST & SIGNATURES -->
+<div class="page">
+    <h2>Crosby Middle School</h2>
+    <h3>Travel Request & Approval Form</h3>
+
+    <div class="section-header">Part 3: CMS Travel Request Form</div>
+    
+    <div class="instruction-box">
+        <strong>Important Checklist:</strong> Due 3 weeks before travel. Please attach Google Maps with mileage information (start to finish with all stops) and attach list of students traveling. 
+        <br><em>Note: Student overnight trips MUST have Board Approval submitted 2 months prior to travel.</em>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="teacher-sponsor">Teacher/Sponsor:</label>
+            <input type="text" id="teacher-sponsor" name="teacher_sponsor">
+        </div>
+        <div class="col">
+            <label for="student-group">Student Group:</label>
+            <input type="text" id="student-group" name="student_group">
+        </div>
+        <div class="col">
+            <label for="vehicles-needed">No. of Busses/Suburbans Needed:</label>
+            <input type="number" id="vehicles-needed" name="vehicles_needed">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="reason">Reason for Travel:</label>
+            <input type="text" id="reason" name="reason">
+        </div>
+        <div class="col">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location">
+        </div>
+        <div class="col">
+            <label for="travel-dates">Dates of Travel:</label>
+            <input type="text" id="travel-dates" name="travel_dates">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="reg-cost">Cost of Registration ($):</label>
+            <input type="text" id="reg-cost" name="reg_cost">
+        </div>
+        <div class="col">
+            <label for="hotel-cost">Hotel Cost per Night ($):</label>
+            <input type="text" id="hotel-cost" name="hotel_cost" placeholder="Check GSA rate guidelines">
+        </div>
+        <div class="col">
+            <label for="overnight-trip">Overnight Trip with Students?</label>
+            <select id="overnight-trip" name="overnight_trip">
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label for="pertinent-info">Other Pertinent Information:</label>
+            <textarea id="pertinent-info" name="pertinent_info" style="height: 80px;"></textarea>
+        </div>
+    </div>
+
+    <div class="signature-block">
+        <div class="row">
+            <div class="col">
+                <label for="teacher-sig">Teacher/Sponsor Signature:</label>
+                <input type="text" id="teacher-sig" name="teacher_sig" placeholder="Sign or type name">
+            </div>
+            <div class="col">
+                <label for="date-sig1">Date:</label>
+                <input type="text" class="sig-date" id="date-sig1" name="date_sig1" placeholder="">
+            </div>
+        </div>
+        <div class="row" style="margin-top: 15px;">
+            <div class="col">
+                <label for="bookkeeper-sig">Bookkeeper Signature:</label>
+                <input type="text" id="bookkeeper-sig" name="bookkeeper_sig">
+            </div>
+            <div class="col">
+                <label for="date-sig2">Date:</label>
+                <input type="text" class="sig-date" id="date-sig2" name="date_sig2" placeholder="">
+            </div>
+        </div>
+        <div class="row" style="margin-top: 15px;">
+            <div class="col">
+                <label for="principal-sig">Principal Approval Signature:</label>
+                <input type="text" id="principal-sig" name="principal_sig">
+            </div>
+            <div class="col">
+                <label for="date-sig3">Date:</label>
+                <input type="text" class="sig-date" id="date-sig3" name="date_sig3" placeholder="">
+            </div>
+        </div>
+    </div>
+
+    <div class="page-footer">
+        <span>Crosby Middle School Request Form</span>
+        <span class="stamp-date"></span>
+    </div>
+</div>
+
+<!-- PAGE 3: GOOGLE MAPS ROUTE ATTACHMENT -->
+<div class="page">
+    <h2>Crosby Middle School</h2>
+    <h3>Attachment: Round-Trip Route & Mileage Maps</h3>
+
+    <div class="map-controls no-print">
+        <div class="row">
+            <div class="col">
+                <label for="cms-address">Default School Address:</label>
+                <input type="text" id="cms-address" value="Crosby Middle School, 14703 FM 2100, Crosby, TX 77532" readonly style="background-color: #eef;">
+            </div>
+            <div class="col">
+                <label for="dest-address">Trip Destination Address:</label>
+                <input type="text" id="dest-address" placeholder="e.g., 1513 Cambridge St, Houston, TX 77030">
+                <div class="input-hint"><strong>Directions:</strong> Please type the exact street address, city, state, and zip code below to generate accurate route maps and mileage.</div>
+            </div>
+        </div>
+        <button class="btn-generate" onclick="generateMaps()">Generate Round-Trip Maps</button>
+    </div>
+
+    <!-- MAP 1: GOING THERE -->
+    <div class="map-title">1. Outbound Route: Crosby Middle School → <span class="outbound-dest-label">[Exact Destination]</span></div>
+    <iframe id="map-outbound" class="map-frame" src="https://maps.google.com/maps?q=14703%20FM%202100,%20Crosby,%20TX%2077532&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+
+    <!-- MAP 2: COMING BACK -->
+    <div class="map-title">2. Return Route: <span class="outbound-dest-label">[Exact Destination]</span> → Crosby Middle School</div>
+    <iframe id="map-return" class="map-frame" src="https://maps.google.com/maps?q=14703%20FM%202100,%20Crosby,%20TX%2077532&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+
+    <div class="page-footer">
+        <span>Crosby Middle School Request Form</span>
+        <span class="stamp-date"></span>
+    </div>
+</div>
+
+<!-- PAGE 4: FIELD TRIP PREPARATION CHECKLIST -->
+<div class="page">
+    <h2>Crosby Middle School</h2>
+    <h3>Field Trip Preparation & Communication Checklist</h3>
+
+    <div class="section-header">Part 4: Teacher & Staff Checklist</div>
+
+    <div class="checklist-container">
+        
+        <!-- Checklist Item 1 -->
+        <div class="checklist-item">
+            <input type="checkbox" id="check1">
+            <label for="check1" class="checklist-label">Submit substitute request in Aesop and notify grade-level/department team</label>
+        </div>
+
+        <!-- Checklist Item 2 -->
+        <div class="checklist-item">
+            <input type="checkbox" id="check2">
+            <label for="check2" class="checklist-label">Post split rosters in advance in the event a substitute is unavailable</label>
+        </div>
+
+        <!-- Checklist Item 3 -->
+        <div class="checklist-item">
+            <input type="checkbox" id="check3">
+            <label for="check3" class="checklist-label">Submit field trip attendance roster to the School Nurse, Attendance Clerk, and Cafeteria Manager at least 3 business days prior to travel</label>
+        </div>
+
+        <!-- Sub-Checklist Requirements -->
+        <ul class="sub-checklist">
+            <li>
+                <input type="checkbox" id="subcheck1">
+                <label for="subcheck1">Include complete student details: Full Name, Student ID Number, and Grade Level</label>
+            </li>
+            <li style="margin-left: 23px;">
+                <input type="checkbox" id="subcheck2">
+                <label for="subcheck2">Format roster exclusively as an Excel spreadsheet</label>
+            </li>
+            <li style="margin-top: 6px;">
+                <input type="checkbox" id="subcheck3">
+                <label for="subcheck3">Attach spreadsheet to an email specifying travel date(s), impacted periods/times, and the hosting organization</label>
+            </li>
+        </ul>
+
+    </div>
+
+    <!-- PRINT BUTTON AT BOTTOM OF PAGE 4 -->
+    <div class="print-bar no-print">
+        <button class="btn-print" onclick="triggerPrint()">Print or Save as PDF</button>
+    </div>
+
+    <div class="page-footer">
+        <span>Crosby Middle School Request Form</span>
+        <span class="stamp-date"></span>
+    </div>
+</div>
+
+<script>
+    // Generate Today's Date Stamp in Footers
+    window.onload = function() {
+        var today = new Date();
+        var dateStr = "Generated on: " + (today.getMonth() + 1) + "/" + today.getDate() + "/" + today.getFullYear();
+        var elements = document.querySelectorAll('.stamp-date');
+        elements.forEach(function(el) {
+            el.innerText = dateStr;
+        });
+    };
+
+    function generateMaps() {
+        var cmsAddress = document.getElementById('cms-address').value;
+        var destAddress = document.getElementById('dest-address').value;
+
+        if (!destAddress.trim()) {
+            alert('Please enter an exact destination address.');
+            return;
+        }
+
+        var encodedCMS = encodeURIComponent(cmsAddress);
+        var encodedDest = encodeURIComponent(destAddress);
+
+        // Update titles
+        var destLabels = document.querySelectorAll('.outbound-dest-label');
+        destLabels.forEach(function(el) {
+            el.innerText = destAddress;
+        });
+
+        // 1. Outbound map (CMS -> Dest)
+        var outboundUrl = "https://maps.google.com/maps?saddr=" + encodedCMS + "&daddr=" + encodedDest + "&output=embed";
+        document.getElementById('map-outbound').src = outboundUrl;
+
+        // 2. Return map (Dest -> CMS)
+        var returnUrl = "https://maps.google.com/maps?saddr=" + encodedDest + "&daddr=" + encodedCMS + "&output=embed";
+        document.getElementById('map-return').src = returnUrl;
+    }
+
+    // Trigger Print with Guidance Prompt
+    function triggerPrint() {
+        alert("Print Tip:\n\n1. Change Destination printer to 'Save as PDF'.\n2. Uncheck 'Headers and Footers' in More Settings if prompted.");
+        window.print();
+    }
+</script>
+
+</body>
+</html>
